@@ -1,17 +1,11 @@
-import { Layout } from "@/components"
-import { Hero } from "./components"
+import { Container } from "@chakra-ui/react"
 import { Fragment } from "react"
+import { ChakraHero } from "./components/"
 
 const Home = () => {
   return (
     <Fragment>
-      <div
-        style={{
-          width: "100%",
-          height: "80px",
-        }}
-      />
-      <Hero />
+      <ChakraHero />
     </Fragment>
   )
 }

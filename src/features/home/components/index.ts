@@ -1,1 +1,1 @@
-export * from "./Hero"
+export * from "./ChakraHero"

@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 type MovieItemProps = {
   title?: string
   rating?: number
-  source?: string
+  source?: string | null
   children?: React.ReactNode
 }
 

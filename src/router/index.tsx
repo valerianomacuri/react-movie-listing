@@ -1,54 +1,77 @@
+import { lazy, Suspense } from "react"
 import {
   HashRouter,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom"
-import { Layout, PrivateLayout } from "@/components"
+
 import { RequireAuth } from "@/features/auth/components/RequiredAuth"
 import { PublicPage } from "@/features/auth/components/PublicPage"
-import Home from "@/features/home/Home"
-import Movies from "@/features/movies/Movies"
-import Login from "@/features/auth/Login"
+import { ChakraLayout } from "@/components/ChakraLayout"
+
+const LazyHome = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "Home" */ "@/features/home/Home"
+    ),
+)
+
+const LazyMovies = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "Movies" */ "@/features/movies/Movies"
+    ),
+)
+
+const LazyLogin = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "Login" */ "@/features/auth/Login"
+    ),
+)
 
 export const Router = () => {
   return (
-    <HashRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <PublicPage>
-              <Layout />
-            </PublicPage>
-          }
-        >
+    <Suspense fallback={<h1>Cargando...</h1>}>
+      <HashRouter>
+        <Routes>
           <Route
-            index
-            element={<Navigate to="/login" replace />}
-          />
-          <Route path="movies" element={<Movies />} />
-          <Route path="login" element={<Login />} />
-          <Route path="home" element={<Home />} />
-          <Route
-            path="*"
-            element={<Navigate to="/login" replace />}
-          />
-          {/* <Route path="teams" element={<Teams />}>
+            path="/"
+            element={
+              <PublicPage>
+                <ChakraLayout />
+              </PublicPage>
+            }
+          >
+            <Route
+              index
+              element={<Navigate to="/login" replace />}
+            />
+            <Route path="movies" element={<LazyMovies />} />
+            <Route path="login" element={<LazyLogin />} />
+            <Route path="home" element={<LazyHome />} />
+            <Route
+              path="*"
+              element={<Navigate to="/login" replace />}
+            />
+            {/* <Route path="teams" element={<Teams />}>
             <Route path=":teamId" element={<Team />} />
             <Route path="new" element={<NewTeamForm />} />
             <Route index element={<LeagueStandings />} />
           </Route> */}
-        </Route>
-        <Route
-          path="/u"
-          element={
-            <RequireAuth>
-              <PrivateLayout />
-            </RequireAuth>
-          }
-        />
-      </Routes>
-    </HashRouter>
+          </Route>
+          <Route
+            path="/u"
+            element={
+              <RequireAuth>
+                <div>Hello Leonardo</div>
+              </RequireAuth>
+            }
+          />
+          <Route path="/p" element={<ChakraLayout />} />
+        </Routes>
+      </HashRouter>
+    </Suspense>
   )
 }

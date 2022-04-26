@@ -1,25 +1,16 @@
-import styled from "styled-components"
+import { Form, Formik } from "formik"
 import * as Yup from "yup"
 import { useAppDispatch } from "@/app/hooks"
-import { Formik } from "formik"
-import { Button, InputText, Typography } from "@/components"
-import { css } from "styled-components"
 import { login, useAuth } from "../authSlice"
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  Text,
+} from "@chakra-ui/react"
 
-const styles = css`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  & > button {
-    margin-top: calc(40px - 16px);
-  }
-  & > ${Typography} {
-    margin-bottom: calc(40px - 16px);
-  }
-`
-
-export const LoginForm = styled(({ ...rest }) => {
+export const LoginForm = () => {
   const dispatch = useAppDispatch()
   const { status } = useAuth()
   return (
@@ -49,49 +40,70 @@ export const LoginForm = styled(({ ...rest }) => {
         errors,
         touched,
       }) => (
-        <form onSubmit={handleSubmit} {...rest} noValidate>
-          <Typography as={"h1"} variant="h1">
+        <Form
+          onSubmit={handleSubmit}
+          noValidate
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "100%",
+          }}
+        >
+          <Text
+            as="h1"
+            fontSize={"6xl"}
+            fontWeight="bold"
+            marginBottom={"calc(40px - 16px)"}
+          >
             Login
-          </Typography>
-          <InputText
-            inputProps={{
-              type: "email",
-              ...getFieldProps("email"),
-            }}
-            label="Email"
-            fullWidth
-            error={!!errors.email && touched.email}
-            helperText={
-              errors.email && touched.email
+          </Text>
+          <FormControl
+            isInvalid={
+              (errors.email && touched.email) as boolean
+            }
+          >
+            <Input
+              id="email"
+              type={"email"}
+              placeholder="Email"
+              {...getFieldProps("email")}
+            />
+            <FormErrorMessage>
+              {errors.email && touched.email
                 ? errors.email
-                : null
+                : null}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl
+            isInvalid={
+              (errors.password &&
+                touched.password) as boolean
             }
-          />
-          <InputText
-            inputProps={{
-              type: "password",
-              ...getFieldProps("password"),
-            }}
-            label="Password"
-            fullWidth
-            error={!!errors.password && touched.password}
-            helperText={
-              errors.password && touched.password
+          >
+            <Input
+              id="password"
+              placeholder="Password"
+              type="password"
+              {...getFieldProps("password")}
+            />
+            <FormErrorMessage>
+              {errors.password && touched.password
                 ? errors.password
-                : null
-            }
-          />
+                : null}
+            </FormErrorMessage>
+          </FormControl>
           <Button
             type="submit"
-            fullWidth
-            loading={status === "loading"}
+            w="full"
+            isLoading={status === "loading"}
+            size={"lg"}
+            marginTop="calc(40px - 16px)"
           >
             Login
           </Button>
-        </form>
+        </Form>
       )}
     </Formik>
   )
-})`
-  ${styles}
-`
+}

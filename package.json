@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^1.8.8",
     "@craco/craco": "^6.4.3",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
@@ -15,6 +18,7 @@
     "@types/react-redux": "^7.1.7",
     "axios": "^0.26.1",
     "formik": "^2.2.9",
+    "framer-motion": "^6",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",

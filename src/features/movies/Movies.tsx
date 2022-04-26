@@ -1,13 +1,9 @@
 import { Fragment, useEffect, useState } from "react"
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from "react-query"
+import { useInfiniteQuery, useQuery } from "react-query"
 import moviesApi, {
   getMoviesNowPlaying,
 } from "@/api/moviesApi"
-import { Hero } from "./components"
+import { ChakraHero } from "./components"
 import {
   MovieDBNowPlaying,
   MovieDBSearchedMovies,
@@ -19,6 +15,8 @@ import { MovieItemSkeleton } from "../../components/MovieItemSkeleton/index"
 import { MovieSkeletonList } from "@/components/MovieSkeletonList"
 import { useDebounce } from "@/hooks"
 import searchMoviesApi from "@/api/searchMoviesApi"
+import { shortTitle } from "@/utils"
+import { Button } from "@chakra-ui/react"
 
 const Movies = () => {
   const { ref: loadMoreRef, inView } = useInView()
@@ -40,6 +38,8 @@ const Movies = () => {
         }
         alert("No hay más paginas")
       },
+      // tiempo en cache de 5 minutos
+      staleTime: 60000 * 5,
     },
   )
   //* ==============================================
@@ -70,36 +70,19 @@ const Movies = () => {
     }
   }, [inView])
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setSearchValue(e.target.value)
-  }
-
-  console.log(Boolean(debouncedValue.trim()))
   return (
     <Fragment>
-      <div
-        style={{
-          width: "100%",
-          height: "80px",
-        }}
-      />
-      <Hero
-        type={"text"}
-        onChange={onChange}
+      <ChakraHero
+        onSearch={setSearchValue}
         value={searchValue}
       />
+      {/* <Hero onSearch={setSearchValue} value={searchValue} /> */}
       {Boolean(debouncedValue.trim()) ? (
         <MovieList loading={isSearchedFetching}>
           {searchedMovies?.data.results.map(movie => (
             <MovieItem
               key={movie.id}
-              title={
-                movie.title.length > 23
-                  ? movie.title.substring(0, 23) + " ..."
-                  : movie.title
-              }
+              title={shortTitle(movie.title)}
               rating={movie.vote_average}
               source={movie.poster_path}
             />
@@ -111,16 +94,9 @@ const Movies = () => {
             return data.results.map(movie => (
               <MovieItem
                 key={movie.id}
-                title={
-                  movie.title.length > 23
-                    ? movie.title.substring(0, 23) + " ..."
-                    : movie.title
-                }
+                title={shortTitle(movie.title)}
                 rating={movie.vote_average}
-                source={
-                  "http://image.tmdb.org/t/p/w300" +
-                  movie.poster_path
-                }
+                source={movie.poster_path}
               />
             ))
           })}

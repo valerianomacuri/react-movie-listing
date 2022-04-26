@@ -1,11 +1,11 @@
-import { fetchLogin } from "./authenticationApi"
-import { RootState } from "../../app/store"
 import {
   createSlice,
   createAsyncThunk,
 } from "@reduxjs/toolkit"
-import { useAppSelector } from "@/app/hooks"
 import { customAlert } from "@/alerts"
+import { useAppSelector } from "@/app/hooks"
+import { fetchLogin } from "./authenticationApi"
+import { RootState } from "../../app/store"
 
 export interface AuthState {
   status: "idle" | "loading" | "error"
@@ -42,6 +42,7 @@ export const login = createAsyncThunk(
     }
   },
 )
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -56,16 +57,17 @@ export const authSlice = createSlice({
     })
     builder.addCase(login.fulfilled, (state, action) => {
       state.status = "idle"
-      console.log(action)
       state.isAuthenticated = action.payload
     })
     builder.addCase(login.rejected, (state, action) => {
-      console.log(action)
       state.status = "error"
     })
   },
 })
+
 export const { logout } = authSlice.actions
+
 export const useAuth = () =>
   useAppSelector((state: RootState) => state.auth)
+
 export default authSlice.reducer
