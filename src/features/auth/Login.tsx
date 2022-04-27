@@ -1,54 +1,42 @@
-import { Box, Image } from "@chakra-ui/react"
+import { Box, Image, SimpleGrid } from "@chakra-ui/react"
 import { Fragment } from "react"
-import styled, { css } from "styled-components"
 import { LoginForm } from "./components/LoginForm"
-
-// const styles = css`
-//   display: flex;
-//   justify-content: space-between;
-//   gap: 126px;
-//   align-items: center;
-//   padding-top: 40px;
-//   padding-bottom: 40px;
-//   height: calc(100vh - 80px);
-//   ${Image} {
-//     height: 100%;
-//   }
-// `
 
 const Login = () => {
   return (
     <Fragment>
-      <Box
-        display={"flex"}
-        flexDirection={{
-          base: "column",
-          md: "row",
+      <SimpleGrid
+        columns={{
+          base: 1,
+          sm: 1,
+          md: 2,
         }}
         justifyContent="center"
         alignItems={"center"}
-        paddingTop={10}
         minHeight="calc(100vh - 72px)"
-        paddingBottom={{
-          base: "40px",
-          md: 0,
+        padding={{
+          base: "40px 0",
+          sm: "40px 0",
+          md: "0",
         }}
       >
         <Box
-          margin={{
-            base: "0 30px",
-            sm: "0 90px",
-            md: "0 100px 0 70px",
-          }}
+          height="100%"
+          display={"flex"}
+          alignItems="center"
         >
           <Image
             src="./assets/images/cartoon.png"
             objectFit={"cover"}
+            paddingRight={"120px"}
+            margin={"auto"}
           />
         </Box>
-
-        <LoginForm />
-      </Box>
+        <Box>
+          <LoginForm />
+        </Box>
+      </SimpleGrid>
+      {/* </Box> */}
     </Fragment>
   )
 }

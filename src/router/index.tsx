@@ -10,6 +10,13 @@ import { RequireAuth } from "@/features/auth/components/RequiredAuth"
 import { PublicPage } from "@/features/auth/components/PublicPage"
 import { ChakraLayout } from "@/components/ChakraLayout"
 
+const LazyMovieDetails = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "MovieDetails" */ "@/features/details/MovieDetails"
+    ),
+)
+
 const LazyHome = lazy(
   () =>
     import(
@@ -51,6 +58,10 @@ export const Router = () => {
             <Route path="movies" element={<LazyMovies />} />
             <Route path="login" element={<LazyLogin />} />
             <Route path="home" element={<LazyHome />} />
+            <Route
+              path="movie/:id"
+              element={<LazyMovieDetails />}
+            />
             <Route
               path="*"
               element={<Navigate to="/login" replace />}

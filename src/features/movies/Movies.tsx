@@ -8,15 +8,15 @@ import {
   MovieDBNowPlaying,
   MovieDBSearchedMovies,
 } from "./interfaces/movies"
-import { MovieList } from "../../components/MovieList/index"
-import { MovieItem } from "@/components"
 import { useInView } from "react-intersection-observer"
-import { MovieItemSkeleton } from "../../components/MovieItemSkeleton/index"
-import { MovieSkeletonList } from "@/components/MovieSkeletonList"
+import searchApi from "@/api/searchApi"
 import { useDebounce } from "@/hooks"
-import searchMoviesApi from "@/api/searchMoviesApi"
 import { shortTitle } from "@/utils"
-import { Button } from "@chakra-ui/react"
+import {
+  ChakraMovieSkeletonItem,
+  ChakraMovieList,
+  ChakraMovieItem,
+} from "@/components"
 
 const Movies = () => {
   const { ref: loadMoreRef, inView } = useInView()
@@ -53,7 +53,7 @@ const Movies = () => {
     // identificadores unicos, debouncedValue permite el refetch
     ["searched_movies", debouncedValue],
     () =>
-      searchMoviesApi.get<MovieDBSearchedMovies>("", {
+      searchApi.get<MovieDBSearchedMovies>("movie", {
         params: {
           query: debouncedValue,
         },
@@ -76,23 +76,24 @@ const Movies = () => {
         onSearch={setSearchValue}
         value={searchValue}
       />
-      {/* <Hero onSearch={setSearchValue} value={searchValue} /> */}
       {Boolean(debouncedValue.trim()) ? (
-        <MovieList loading={isSearchedFetching}>
+        <ChakraMovieList isLoading={isSearchedFetching}>
           {searchedMovies?.data.results.map(movie => (
-            <MovieItem
+            <ChakraMovieItem
+              id={movie.id}
               key={movie.id}
               title={shortTitle(movie.title)}
               rating={movie.vote_average}
               source={movie.poster_path}
             />
           ))}
-        </MovieList>
+        </ChakraMovieList>
       ) : (
-        <MovieList loading={isLoading}>
+        <ChakraMovieList isLoading={isLoading}>
           {movies?.pages.map(data => {
             return data.results.map(movie => (
-              <MovieItem
+              <ChakraMovieItem
+                id={movie.id}
                 key={movie.id}
                 title={shortTitle(movie.title)}
                 rating={movie.vote_average}
@@ -102,14 +103,14 @@ const Movies = () => {
           })}
           {isFetchingNextPage ? (
             <Fragment>
-              <MovieItemSkeleton />
-              <MovieItemSkeleton />
-              <MovieItemSkeleton />
-              <MovieItemSkeleton />
+              <ChakraMovieSkeletonItem />
+              <ChakraMovieSkeletonItem />
+              <ChakraMovieSkeletonItem />
+              <ChakraMovieSkeletonItem />
             </Fragment>
           ) : null}
           <div ref={loadMoreRef}></div>
-        </MovieList>
+        </ChakraMovieList>
       )}
     </Fragment>
   )
