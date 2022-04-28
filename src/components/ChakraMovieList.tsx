@@ -11,9 +11,9 @@ export const ChakraMovieList: FC<{
         base: 1,
         sm: 2,
         md: 3,
+        lg: 4,
       }}
       gap="24px"
-      paddingBottom={"156px"}
     >
       {isLoading ? (
         <Fragment>

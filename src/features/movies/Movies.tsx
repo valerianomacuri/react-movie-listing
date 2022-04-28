@@ -1,49 +1,17 @@
-import { Fragment, useEffect, useState } from "react"
-import { useInfiniteQuery, useQuery } from "react-query"
-import moviesApi, {
-  getMoviesNowPlaying,
-} from "@/api/moviesApi"
+import { Fragment, useState } from "react"
+import { useQuery } from "react-query"
 import { ChakraHero } from "./components"
-import {
-  MovieDBNowPlaying,
-  MovieDBSearchedMovies,
-} from "./interfaces/movies"
-import { useInView } from "react-intersection-observer"
+import { MovieDBSearchedMovies } from "./interfaces/movies"
 import searchApi from "@/api/searchApi"
 import { useDebounce } from "@/hooks"
 import { shortTitle } from "@/utils"
 import {
-  ChakraMovieSkeletonItem,
   ChakraMovieList,
   ChakraMovieItem,
 } from "@/components"
+import { MoviesInfinityScroll } from "./components"
 
 const Movies = () => {
-  const { ref: loadMoreRef, inView } = useInView()
-  const {
-    data: movies,
-    isLoading,
-    isFetchingNextPage,
-    isSuccess,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery<MovieDBNowPlaying>(
-    "now_playing",
-    ({ pageParam = 1 }) => getMoviesNowPlaying(pageParam),
-    {
-      getNextPageParam: (pageParam, pages) => {
-        if (pageParam.total_pages > pageParam.page) {
-          return pageParam.page + 1
-        }
-        alert("No hay más paginas")
-      },
-      // tiempo en cache de 5 minutos
-      staleTime: 60000 * 5,
-    },
-  )
-  //* ==============================================
-
   const [searchValue, setSearchValue] = useState("")
   const debouncedValue = useDebounce(searchValue, 500)
   const {
@@ -64,12 +32,6 @@ const Movies = () => {
     },
   )
 
-  useEffect(() => {
-    if (inView && !isFetchingNextPage && hasNextPage) {
-      fetchNextPage()
-    }
-  }, [inView])
-
   return (
     <Fragment>
       <ChakraHero
@@ -89,28 +51,7 @@ const Movies = () => {
           ))}
         </ChakraMovieList>
       ) : (
-        <ChakraMovieList isLoading={isLoading}>
-          {movies?.pages.map(data => {
-            return data.results.map(movie => (
-              <ChakraMovieItem
-                id={movie.id}
-                key={movie.id}
-                title={shortTitle(movie.title)}
-                rating={movie.vote_average}
-                source={movie.poster_path}
-              />
-            ))
-          })}
-          {isFetchingNextPage ? (
-            <Fragment>
-              <ChakraMovieSkeletonItem />
-              <ChakraMovieSkeletonItem />
-              <ChakraMovieSkeletonItem />
-              <ChakraMovieSkeletonItem />
-            </Fragment>
-          ) : null}
-          <div ref={loadMoreRef}></div>
-        </ChakraMovieList>
+        <MoviesInfinityScroll />
       )}
     </Fragment>
   )

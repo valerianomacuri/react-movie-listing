@@ -56,6 +56,17 @@ const theme = {
     Input,
     Button,
   },
+  styles: {
+    global: {
+      body: {
+        backgroundColor: "#121829",
+        backgroundImage:
+          "url(./assets/images/background.svg)",
+        backgroundRepeat: "repeat-y",
+        backgroundSize: "cover",
+      },
+    },
+  },
 }
 
 export const chakraTheme = extendTheme(

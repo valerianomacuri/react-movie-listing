@@ -9,6 +9,7 @@ import {
 import { RequireAuth } from "@/features/auth/components/RequiredAuth"
 import { PublicPage } from "@/features/auth/components/PublicPage"
 import { ChakraLayout } from "@/components/ChakraLayout"
+import { Fallback } from "@/components"
 
 const LazyMovieDetails = lazy(
   () =>
@@ -38,9 +39,14 @@ const LazyLogin = lazy(
     ),
 )
 
+const LazyTV = lazy(
+  () =>
+    import(/* webpackChunkName: "TV" */ "@/features/tv/TV"),
+)
+
 export const Router = () => {
   return (
-    <Suspense fallback={<h1>Cargando...</h1>}>
+    <Suspense fallback={<Fallback />}>
       <HashRouter>
         <Routes>
           <Route
@@ -58,6 +64,7 @@ export const Router = () => {
             <Route path="movies" element={<LazyMovies />} />
             <Route path="login" element={<LazyLogin />} />
             <Route path="home" element={<LazyHome />} />
+            <Route path="tv" element={<LazyTV />} />
             <Route
               path="movie/:id"
               element={<LazyMovieDetails />}

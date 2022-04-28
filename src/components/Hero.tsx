@@ -11,11 +11,13 @@ import { FiSearch } from "react-icons/fi"
 type ChakraProps = {
   onSearch?: (value: string) => void
   value?: string
+  title?: string
 }
 
-export const ChakraHero = ({
+export const Hero = ({
   onSearch,
   value,
+  title,
 }: ChakraProps) => {
   return (
     <Box
@@ -33,7 +35,7 @@ export const ChakraHero = ({
         MaileHereko
       </Text>
       <Text as="h1" fontSize={"7xl"} fontWeight="bold">
-        Movies
+        {title}
       </Text>
       <FormControl mb={12}>
         <InputGroup>

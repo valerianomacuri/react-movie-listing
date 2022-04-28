@@ -3,10 +3,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query"
-import { ThemeProvider } from "styled-components"
 import { Router } from "./router"
 import theme from "./theme"
-import GlobalStyle from "./theme/globalStyles"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,17 +18,14 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <IconContext.Provider
-          value={{
-            color: theme.colors.grey[600],
-            size: "24px",
-          }}
-        >
-          <Router />
-        </IconContext.Provider>
-      </ThemeProvider>
+      <IconContext.Provider
+        value={{
+          color: theme.colors.grey[600],
+          size: "24px",
+        }}
+      >
+        <Router />
+      </IconContext.Provider>
     </QueryClientProvider>
   )
 }

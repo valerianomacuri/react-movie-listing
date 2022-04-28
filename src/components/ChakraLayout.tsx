@@ -1,24 +1,23 @@
-import { ChakraHero } from "@/features/home/components"
 import { Container } from "@chakra-ui/react"
-import { Fragment } from "react"
 import { Outlet } from "react-router-dom"
 import { ChakraNavbar } from "./ChakraNavbar"
 
 export const ChakraLayout = () => {
   return (
-    <Fragment>
+    <div style={{}}>
       <ChakraNavbar />
       <div
         style={{
           height: 72,
+          background: "transparent",
         }}
       />
       <Container
-        maxW="container.lg"
+        maxW="container.xl"
         minH={"calc(100vh - 72px)"}
       >
         <Outlet />
       </Container>
-    </Fragment>
+    </div>
   )
 }

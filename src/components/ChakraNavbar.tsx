@@ -39,7 +39,7 @@ export function ChakraNavbar() {
           alignItems="center"
           justifyContent="space-between"
           mx="auto"
-          maxW={"container.lg"}
+          maxW={"container.xl"}
         >
           <Flex>
             <chakra.a
@@ -72,7 +72,9 @@ export function ChakraNavbar() {
               >
                 Movies
               </Button>
-              <Button variant="ghost">TV Shows</Button>
+              <Button variant="ghost" as={Link} to="/tv">
+                TV Shows
+              </Button>
               <Button variant="ghost">Suggest me</Button>
             </HStack>
 
@@ -127,7 +129,12 @@ export function ChakraNavbar() {
                 >
                   Movies
                 </Button>
-                <Button w="full" variant="ghost">
+                <Button
+                  as={Link}
+                  to="/tv"
+                  w="full"
+                  variant="ghost"
+                >
                   TV Shows
                 </Button>
                 <Button w="full" variant="ghost">
