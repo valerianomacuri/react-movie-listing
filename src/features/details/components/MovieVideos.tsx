@@ -32,7 +32,14 @@ export const MovieVideos = ({
         size={"3xl"}
       >
         <ModalOverlay />
-        <ModalContent bg={"#121829"}>
+        <ModalContent
+          style={{
+            backdropFilter: "blur(40px)",
+            border: "1px solid #20283e",
+            backgroundColor: "rgba(18, 24, 41, 0.8)",
+            borderRadius: "24px",
+          }}
+        >
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>

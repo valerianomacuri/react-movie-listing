@@ -1,6 +1,3 @@
-export * from "./InputText"
-export * from "./Typography"
-export * from "./Button"
 export * from "./Logo"
 export * from "./ChakraLayout"
 export * from "./ChakraNavbar"
