@@ -49,6 +49,7 @@ export const TVInfinityScroll = () => {
           tv?.pages.map(data => {
             return data.results.map(tv => (
               <ChakraMovieItem
+                to={`/movie/${tv.id}`}
                 id={tv.id}
                 key={tv.id}
                 title={Utils.shortTitle(tv.name)}

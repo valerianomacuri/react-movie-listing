@@ -1,5 +1,4 @@
 import React from "react"
-
 import {
   chakra,
   Box,
@@ -15,12 +14,18 @@ import {
   Container,
 } from "@chakra-ui/react"
 import { AiOutlineMenu } from "react-icons/ai"
-import { Logo } from "./Logo"
 import { Link } from "react-router-dom"
+import { Logo } from "@/components"
+import { logout } from "@/features/auth/authSlice"
+import { useAppDispatch } from "@/app/hooks"
 
-export function ChakraNavbar() {
+export function Navbar() {
   const mobileNav = useDisclosure()
+  const dispath = useAppDispatch()
 
+  const onLogout = () => {
+    dispath(logout())
+  }
   return (
     <React.Fragment>
       <chakra.header
@@ -59,20 +64,26 @@ export function ChakraNavbar() {
               color="brand.500"
               display={{ base: "none", md: "inline-flex" }}
             >
-              <Button as={Link} to="/login" variant="ghost">
-                Login
+              <Button
+                as={Link}
+                to="dashboard"
+                variant="ghost"
+              >
+                Dashboard
               </Button>
               <Button
                 as={Link}
-                to="/movies"
+                to="suggestions"
                 variant="ghost"
               >
-                Movies
+                Suggestions
               </Button>
-              <Button variant="ghost" as={Link} to="/tv">
-                TV Shows
+              <Button variant="ghost" as={Link} to="add">
+                Add
               </Button>
-              <Button variant="ghost">Suggest me</Button>
+              <Button variant="ghost" onClick={onLogout}>
+                Logout
+              </Button>
             </HStack>
 
             <Box
@@ -114,28 +125,32 @@ export function ChakraNavbar() {
                   as={Link}
                   w="full"
                   variant="ghost"
-                  to={"/login"}
+                  to={"dashboard"}
                 >
-                  Login
+                  Dashboard
                 </Button>
                 <Button
                   as={Link}
                   w="full"
                   variant="ghost"
-                  to={"/movies"}
+                  to={"suggestions"}
                 >
-                  Movies
+                  Suggestions
                 </Button>
                 <Button
                   as={Link}
-                  to="/tv"
+                  to="add"
                   w="full"
                   variant="ghost"
                 >
-                  TV Shows
+                  Add
                 </Button>
-                <Button w="full" variant="ghost">
-                  Suggest me
+                <Button
+                  w="full"
+                  variant="ghost"
+                  onClick={onLogout}
+                >
+                  Logout
                 </Button>
               </VStack>
             </Box>

@@ -1,9 +1,4 @@
-import {
-  Box,
-  Image,
-  Skeleton,
-  Text,
-} from "@chakra-ui/react"
+import { Box, Skeleton } from "@chakra-ui/react"
 
 export const ChakraMovieSkeletonItem = () => {
   return (

@@ -1,8 +1,8 @@
 import { IMAGE_URL } from "@/services"
-import { VStack, Image, Text, Box } from "@chakra-ui/react"
+import { Image, Text, Box } from "@chakra-ui/react"
 import { FC, memo } from "react"
 import { FiStar } from "react-icons/fi"
-import { Link } from "react-router-dom"
+import { Link, To } from "react-router-dom"
 
 type MovieItemProps = {
   title?: string
@@ -10,19 +10,24 @@ type MovieItemProps = {
   source?: string | null
   children?: React.ReactNode
   id: number
+  to: To
 }
+
 export const ChakraMovieItem: FC<MovieItemProps> = memo(
-  ({ title, rating, source, id }) => {
+  ({ title, rating, source, id, to }) => {
     return (
       <Box
         as={Link}
-        to={`/movie/${id}`}
+        to={to}
         display={"flex"}
         flexDirection={"column"}
         borderRadius={"12px"}
         position="relative"
-        bg={"gray.700"}
+        bg={"rgba(32, 40, 62, 0.8)"}
         padding={2}
+        style={{
+          backdropFilter: "blur(80px)",
+        }}
       >
         <Box
           position={"absolute"}

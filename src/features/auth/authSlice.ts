@@ -6,6 +6,7 @@ import { customAlert } from "@/alerts"
 import { useAppSelector } from "@/app/hooks"
 import { fetchLogin } from "./authenticationApi"
 import { RootState } from "../../app/store"
+import * as Utils from "./utils"
 
 export interface AuthState {
   status: "idle" | "loading" | "error"
@@ -14,7 +15,7 @@ export interface AuthState {
 
 const initialState: AuthState = {
   status: "idle",
-  isAuthenticated: false,
+  isAuthenticated: Utils.getIsAuth(),
 }
 
 export const login = createAsyncThunk(
@@ -49,6 +50,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: state => {
       state.isAuthenticated = false
+      Utils.setIsAuth(false)
     },
   },
   extraReducers: builder => {
@@ -58,6 +60,7 @@ export const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.status = "idle"
       state.isAuthenticated = action.payload
+      Utils.setIsAuth(true)
     })
     builder.addCase(login.rejected, (state, action) => {
       state.status = "error"

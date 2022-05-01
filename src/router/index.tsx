@@ -10,11 +10,12 @@ import { RequireAuth } from "@/features/auth/components/RequiredAuth"
 import { PublicPage } from "@/features/auth/components/PublicPage"
 import { ChakraLayout } from "@/components/ChakraLayout"
 import { Fallback } from "@/components"
+import { PrivateLayout } from "@/features/user/components"
 
 const LazyMovieDetails = lazy(
   () =>
     import(
-      /* webpackChunkName: "MovieDetails" */ "@/features/details/MovieDetails"
+      /* webpackChunkName: "MovieDetails" */ "@/features/movies/components/MovieDetails"
     ),
 )
 
@@ -83,11 +84,28 @@ export const Router = () => {
             path="/u"
             element={
               <RequireAuth>
-                <div>Hello Leonardo</div>
+                <PrivateLayout />
               </RequireAuth>
             }
-          />
-          <Route path="/p" element={<ChakraLayout />} />
+          >
+            <Route
+              index
+              element={<Navigate to="dashboard" replace />}
+            />
+            <Route
+              path="dashboard"
+              element={<h1>Dashboard</h1>}
+            />
+            <Route
+              path="suggestions"
+              element={<h1>Suggestions</h1>}
+            />
+            <Route path="add" element={<h1>Add</h1>} />
+            <Route
+              path="*"
+              element={<h1>La pagina no existe</h1>}
+            />
+          </Route>
         </Routes>
       </HashRouter>
     </Suspense>

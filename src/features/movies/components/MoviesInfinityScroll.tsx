@@ -1,4 +1,3 @@
-import { getMoviesNowPlaying } from "@/api/moviesApi"
 import {
   ChakraMovieItem,
   ChakraMovieList,
@@ -6,34 +5,20 @@ import {
 } from "@/components"
 import * as Utils from "@/utils"
 import { Box, Button, Text } from "@chakra-ui/react"
-import { Fragment, useEffect } from "react"
-import { useInfiniteQuery } from "react-query"
-import { MovieDBNowPlaying } from "../interfaces/movies"
+import { Fragment } from "react"
+import { useInfinityMovies } from "../hooks"
 
 export const MoviesInfinityScroll = () => {
   const {
-    data: movies,
+    movies,
     isLoading,
     isFetchingNextPage,
     isSuccess,
     isError,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery<MovieDBNowPlaying>(
-    "now_playing",
-    ({ pageParam = 1 }) => getMoviesNowPlaying(pageParam),
-    {
-      getNextPageParam: (pageParam, pages) => {
-        if (pageParam.total_pages > pageParam.page) {
-          return pageParam.page + 1
-        }
-        alert("No hay más paginas")
-      },
-      // tiempo en cache de 5 minutos
-      staleTime: 60000 * 5,
-    },
-  )
-  useEffect(() => {}, [])
+  } = useInfinityMovies()
+
   if (isError) return <Text>Hubo un Error</Text>
   return (
     <Fragment>
@@ -42,6 +27,7 @@ export const MoviesInfinityScroll = () => {
           movies?.pages.map(data => {
             return data.results.map(movie => (
               <ChakraMovieItem
+                to={`/movie/${movie.id}`}
                 id={movie.id}
                 key={movie.id}
                 title={Utils.shortTitle(movie.title)}
