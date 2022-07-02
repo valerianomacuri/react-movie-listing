@@ -19,6 +19,13 @@ const LazyMovieDetails = lazy(
     ),
 )
 
+const LazyTVDetails = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "TVDetails" */ "@/features/tv/components/TVDetails"
+    ),
+)
+
 const LazyHome = lazy(
   () =>
     import(
@@ -69,6 +76,10 @@ export const Router = () => {
             <Route
               path="movie/:id"
               element={<LazyMovieDetails />}
+            />
+            <Route
+              path="tvd/:id"
+              element={<LazyTVDetails />}
             />
             <Route
               path="*"

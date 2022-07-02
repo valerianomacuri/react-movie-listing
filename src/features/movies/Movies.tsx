@@ -10,21 +10,17 @@ import {
 import { useDebounce } from "@/hooks"
 import { shortTitle } from "@/utils"
 import { useSearchedMovies } from "./hooks"
+import { useSearchParams } from "react-router-dom"
 
 const Movies = () => {
-  const [searchValue, setSearchValue] = useState("")
-  const debouncedValue = useDebounce(searchValue, 500)
-  const { isSearchedFetching, searchedMovies } =
-    useSearchedMovies(debouncedValue)
-
+  const [searchParams] = useSearchParams();
+  const { searchedMovies, isSearchedFetching } = useSearchedMovies(searchParams.get("req") || "")
   return (
     <Fragment>
-      <ChakraHero
-        onSearch={setSearchValue}
-        value={searchValue}
-      />
-      {Boolean(debouncedValue.trim()) ? (
-        <ChakraMovieList isLoading={isSearchedFetching}>
+      <ChakraHero />
+      {typeof searchParams.get("req") !== "string" || searchParams.get("req") === ""
+        ? <MoviesInfinityScroll />
+        : <ChakraMovieList isLoading={isSearchedFetching}>
           {searchedMovies?.data.results.map(movie => (
             <ChakraMovieItem
               to={`/movie/${movie.id}`}
@@ -35,10 +31,7 @@ const Movies = () => {
               source={movie.poster_path}
             />
           ))}
-        </ChakraMovieList>
-      ) : (
-        <MoviesInfinityScroll />
-      )}
+        </ChakraMovieList>}
     </Fragment>
   )
 }
